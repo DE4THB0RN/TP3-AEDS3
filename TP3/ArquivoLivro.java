@@ -1,5 +1,8 @@
+import java.io.RandomAccessFile;
 import java.text.Normalizer;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -67,6 +70,33 @@ public class ArquivoLivro extends Arquivo<Livro> {
             System.out.println(e);
         }
         return resp;
+    }
+
+    public void comprime(){
+        
+        try {
+
+            //Primeiro pega a data e hora atuais
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+
+            //Cria o arquivo de backup
+            RandomAccessFile backup = new RandomAccessFile("backups/"+ timeStamp, nomeArquivo);
+            byte[] conteudo = new byte[(int)(arquivo.length() - TAM_CABECALHO)];
+
+            //Pega todos os registros do arquivo (sem cabeçalho)
+            arquivo.seek(TAM_CABECALHO);
+            arquivo.readFully(conteudo);
+
+            //Comprime em LZW
+            byte[] comprimido = LZW.codifica(conteudo);
+
+            //Coloca no arquivo backup
+            backup.write(comprimido);
+
+            backup.close();
+        } catch (Exception e) {
+            MyIO.println("" + e);
+        }
     }
 
 }

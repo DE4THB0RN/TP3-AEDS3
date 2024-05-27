@@ -6,12 +6,12 @@ import java.util.ArrayList;
 
 public class LZW {
 
-    public final int BITS_POR_INDICE = 12;
+    public static final int BITS_POR_INDICE = 12;
 
 
     public LZW(){}
 
-    public byte[] codifica(byte[] msgBytes) throws Exception {
+    public static byte[] codifica(byte[] msgBytes) throws Exception {
 
         ArrayList<ArrayList<Byte>> dicionario = new ArrayList<>(); // dicionario
         ArrayList<Byte> vetorBytes;  // auxiliar para cada elemento do dicionario
@@ -72,7 +72,7 @@ public class LZW {
     }
 
     @SuppressWarnings("unchecked")
-    public byte[] decodifica(byte[] msgCodificada) throws Exception {
+    public static byte[] decodifica(byte[] msgCodificada) throws Exception {
 
         ByteArrayInputStream bais = new ByteArrayInputStream(msgCodificada);
         DataInputStream dis = new DataInputStream(bais);
